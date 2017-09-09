@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  tunesdb:
+    container_name: tunesdb
+    image: mongo:3.4
+    volumes:
+      - ./db/data:/data
+      - ./db/data/db:/data/db
+      - ./db/data/configdb:/data/configdb
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+
+  server:
+    container_name: server
+    build:
+      context: ./server
+    volumes:
+      - ./server/dist:/app/dist
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    links:
+      - tunesdb
+    depends_on:
+      - tunesdb
