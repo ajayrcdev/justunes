@@ -12,6 +12,7 @@ const app: Application = express()
 app
   .use(cookieParser())
   .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }))
   .use(helmet())
   .use(api)
 
