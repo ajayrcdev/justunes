@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as multer from 'multer'
-import * as path from 'path'
+import * as cors from 'cors'
 
 const router: Router = Router()
 
@@ -9,19 +9,17 @@ const storage = multer.diskStorage({
     callback(null, 'uploads')
   },
   filename: function(req, file, callback) {
-    console.log(file)
-    callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    callback(null, file.originalname)
   }
 })
 
-// const upload = multer({ storage: storage })
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({ storage: storage })
 
 router.get('/', (req, res) => {
   res.sendStatus(200)
 })
 
-router.post('/tune', upload.single('tune'), (req, res) => {
+router.post('/tune', cors(), upload.single('tune'), (req, res) => {
 
   if (!req.file) {
     console.log("No file received")
