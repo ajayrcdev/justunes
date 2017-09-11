@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Http } from '@angular/http';
 import { NavController, AlertController } from 'ionic-angular';
 import { AudioRecorder, AudioRecorderState } from "../../utils/audioRecorder";
 
@@ -11,7 +12,8 @@ export class HomePage {
   
   constructor(public navCtrl: NavController, 
               public alertCtrl: AlertController,
-              public audioRecorder: AudioRecorder) {
+              public audioRecorder: AudioRecorder,
+              public http: Http) {
   }
 
   startRecording() {
@@ -57,5 +59,14 @@ export class HomePage {
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  sendAudioToCloud() {
+    let filePath = this.audioRecorder.getFilePath();
+    console.log('trying to upload', filePath);
+
+    this.http.post('http://localhost:3000/tune', {
+      'tune': filePath
+    });
   }
 }

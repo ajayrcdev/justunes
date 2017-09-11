@@ -11,11 +11,12 @@ export enum AudioRecorderState {
 @Injectable()
 export class AudioRecorder {
   mediaPlugin: MediaPlugin = null;
+  filePath = '../library/nocloud/recording.wav';
   state: AudioRecorderState = AudioRecorderState.Ready;
 
   get MediaPlugin(): MediaPlugin {
     if (this.mediaPlugin == null) {
-      this.mediaPlugin = new MediaPlugin('../library/nocloud/recording.wav');
+      this.mediaPlugin = new MediaPlugin(this.filePath);
     }
 
     return this.mediaPlugin;
@@ -39,5 +40,9 @@ export class AudioRecorder {
   stopPlayback() {
     this.MediaPlugin.stop();
     this.state = AudioRecorderState.Ready;
+  }
+
+  getFilePath() {
+    return this.filePath;
   }
 }
